@@ -1,27 +1,32 @@
 package com.example.finance_keeper_b
 
+import com.example.finance_keeper_b.repository.TransactionEntity
 import com.example.finance_keeper_b.service.FinService
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/transactions")
 class FinController(
     private val service: FinService
 ) {
     @GetMapping()
     fun takeTransactionList(): List<TransactionDto> {
-        return service.takeTransactionList()
+        return service.getAll()
     }
 
     @PostMapping()
-    fun postTransaction(@RequestBody transaction: TransactionDto): List<TransactionDto> {
-        return service.insertTransaction(transaction)
+    fun postTransaction(@RequestBody transactionEntity: TransactionEntity): List<TransactionDto> {
+        return service.create(transactionEntity)
     }
+
+//    @PutMapping()
+//    fun putTransaction(@RequestBody transaction: Transaction): TransactionDto {
+//        return service.update(transaction.id)
+//    }
 
     @DeleteMapping("/{id}")
     fun deleteTransaction(@PathVariable id: Long): List<TransactionDto> {
-        return service.deleteTransaction(id)
+        return service.delete(id)
     }
 }
 
