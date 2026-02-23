@@ -10,9 +10,22 @@ data class TransactionEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    val userId: Long = 0,
-    val categoryId: Long = 0,
-    val amount: Double = 0.0,
-    val date: LocalDate = LocalDate.now(),
-    val type: Boolean = true
+    @Column(nullable = false)
+    var amount: Double = 0.0,
+
+    @Column(nullable = false) // А можно ли что-то не ввести? я может не помню дату
+    var date: LocalDate = LocalDate.now(),
+
+    @Column(nullable = false)
+    var type: Boolean = true,
+
+
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    var userId: Long = 0,
+
+    @ManyToOne
+    @JoinColumn
+    var categoryId: Long = 0,
 )
