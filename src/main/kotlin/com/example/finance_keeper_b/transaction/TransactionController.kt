@@ -8,14 +8,9 @@ class TransactionController(
     private val service: TransactionService
 ) {
     @GetMapping()
-    fun takeTransactionList(): List<TransactionDto> {
+    fun getAllTransactions(): List<TransactionDto> {
         return service.getAll()
     }
-
-//    @PostMapping()
-//    fun postTransaction(@RequestBody transactionEntity: TransactionEntity): List<TransactionDto> {
-//        return service.create(transactionEntity)
-//    }
 
     @PostMapping()
     fun postTransaction(@RequestBody transactionDto: TransactionDto): List<TransactionDto> {

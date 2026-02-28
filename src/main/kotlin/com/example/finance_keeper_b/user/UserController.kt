@@ -1,5 +1,8 @@
 package com.example.finance_keeper_b.user
 
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -11,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val service: UserService
 ) {
+    @GetMapping
+    fun getAllUsers(): List<UserDto> {
+        return service.getAll()
+    }
+
     @PostMapping
     fun postUser(@RequestBody userDto: UserDto): List<UserDto> {
         return service.create(userDto)
@@ -19,5 +27,10 @@ class UserController(
     @PutMapping
     fun putUser(@RequestBody userDto: UserDto): UserDto {
         return service.update(userDto)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteUser(@PathVariable id: Long): List<UserDto> {
+        return service.delete(id)
     }
 }

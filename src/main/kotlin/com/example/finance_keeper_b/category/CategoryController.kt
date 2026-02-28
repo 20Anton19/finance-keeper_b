@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.*
 class CategoryController(
     private val service: CategoryService
 ) {
+    @GetMapping
+    fun getAllCategories(): List<CategoryDto> {
+        return service.getAll()
+    }
+
     @PostMapping
     fun postCategory(@RequestBody categoryDto: CategoryDto): List<CategoryDto> {
         return service.create(categoryDto)
@@ -15,5 +20,10 @@ class CategoryController(
     @PutMapping
     fun putCategory(@RequestBody categoryDto: CategoryDto): CategoryDto {
         return service.update(categoryDto)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteCategory(@PathVariable id: Long): List<CategoryDto> {
+        return service.delete(id)
     }
 }

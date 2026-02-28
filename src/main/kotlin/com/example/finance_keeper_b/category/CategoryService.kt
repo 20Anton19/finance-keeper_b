@@ -11,6 +11,9 @@ class CategoryService(
     private val categoryRepo: CategoryRepo,
     private val userRepo: UserRepo
 ) {
+    fun getAll(): List<CategoryDto> {
+        return categoryRepo.findAll().map { it.toDto() }
+    }
     fun create(categoryDto: CategoryDto): List<CategoryDto> {
         categoryRepo.save(categoryDto.toEntity(userRepo))
         return categoryRepo.findAll().map { it.toDto() }
@@ -20,5 +23,10 @@ class CategoryService(
         if (categoryRepo.findById(categoryDto.id).orElse(null) != null)
             categoryRepo.save(categoryDto.toEntity(userRepo))
         return categoryRepo.getReferenceById(categoryDto.id).toDto()
+    }
+
+    fun delete(id: Long): List<CategoryDto> {
+        categoryRepo.deleteById(id)
+        return categoryRepo.findAll().map { it.toDto() }
     }
 }

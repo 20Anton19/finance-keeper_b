@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController
 class UserService(
     private val userRepo: UserRepo
 ) {
+    fun getAll(): List<UserDto> {
+        return userRepo.findAll().map { it.toDto() }
+    }
 
     fun create(userDto: UserDto): List<UserDto> {
         userRepo.save(userDto.toEntity())
@@ -18,5 +21,10 @@ class UserService(
         if (userRepo.findById(userDto.id).orElse(null) != null)
             userRepo.save(userDto.toEntity())
         return userRepo.getReferenceById(userDto.id).toDto()
+    }
+
+    fun delete(id: Long): List<UserDto> {
+        userRepo.deleteById(id)
+        return userRepo.findAll().map { it.toDto() }
     }
 }
