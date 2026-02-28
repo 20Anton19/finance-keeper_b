@@ -1,28 +1,31 @@
-package com.example.finance_keeper_b
+package com.example.finance_keeper_b.transaction
 
-import com.example.finance_keeper_b.repository.TransactionEntity
-import com.example.finance_keeper_b.service.FinService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/transactions")
-class FinController(
-    private val service: FinService
+class TransactionController(
+    private val service: TransactionService
 ) {
     @GetMapping()
     fun takeTransactionList(): List<TransactionDto> {
         return service.getAll()
     }
 
+//    @PostMapping()
+//    fun postTransaction(@RequestBody transactionEntity: TransactionEntity): List<TransactionDto> {
+//        return service.create(transactionEntity)
+//    }
+
     @PostMapping()
-    fun postTransaction(@RequestBody transactionEntity: TransactionEntity): List<TransactionDto> {
-        return service.create(transactionEntity)
+    fun postTransaction(@RequestBody transactionDto: TransactionDto): List<TransactionDto> {
+        return service.create(transactionDto)
     }
 
-//    @PutMapping()
-//    fun putTransaction(@RequestBody transaction: Transaction): TransactionDto {
-//        return service.update(transaction.id)
-//    }
+    @PutMapping() // приходит только обьект, без отдельного айди. Может быть нужно отдельно?
+    fun putTransaction(@RequestBody transactionDto: TransactionDto): TransactionDto {
+        return service.update(transactionDto)
+    }
 
     @DeleteMapping("/{id}")
     fun deleteTransaction(@PathVariable id: Long): List<TransactionDto> {

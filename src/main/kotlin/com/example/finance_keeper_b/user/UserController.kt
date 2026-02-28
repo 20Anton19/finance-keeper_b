@@ -1,0 +1,23 @@
+package com.example.finance_keeper_b.user
+
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/api/users")
+class UserController(
+    private val service: UserService
+) {
+    @PostMapping
+    fun postUser(@RequestBody userDto: UserDto): List<UserDto> {
+        return service.create(userDto)
+    }
+
+    @PutMapping
+    fun putUser(@RequestBody userDto: UserDto): UserDto {
+        return service.update(userDto)
+    }
+}

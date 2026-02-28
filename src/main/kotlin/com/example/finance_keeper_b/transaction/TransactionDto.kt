@@ -1,4 +1,4 @@
-package com.example.finance_keeper_b
+package com.example.finance_keeper_b.transaction
 
 import java.time.LocalDate
 import java.util.*

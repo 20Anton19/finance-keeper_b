@@ -1,5 +1,7 @@
-package com.example.finance_keeper_b.repository
+package com.example.finance_keeper_b.transaction
 
+import com.example.finance_keeper_b.category.CategoryEntity
+import com.example.finance_keeper_b.user.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 
@@ -23,9 +25,9 @@ data class TransactionEntity(
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    var userId: Long = 0,
+    var user: UserEntity,
 
     @ManyToOne
     @JoinColumn
-    var categoryId: Long = 0,
+    var category: CategoryEntity,
 )
