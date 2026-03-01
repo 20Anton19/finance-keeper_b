@@ -1,6 +1,7 @@
 package com.example.finance_keeper_b.transaction
 
 import com.example.finance_keeper_b.category.CategoryRepo
+import com.example.finance_keeper_b.exception.NotFoundException
 import com.example.finance_keeper_b.user.UserRepo
 import org.springframework.stereotype.Service
 
@@ -26,6 +27,9 @@ class TransactionService (
         return transactionRepo.getReferenceById(transactionDto.id).toDto()
     }
     fun delete(id: Long): List<TransactionDto> {
+        if(!transactionRepo.existsById(id)) {
+            throw NotFoundException("Транзакцию не нашли")
+        }
         transactionRepo.deleteById(id)
         return transactionRepo.findAll().map { it.toDto() }
     }
