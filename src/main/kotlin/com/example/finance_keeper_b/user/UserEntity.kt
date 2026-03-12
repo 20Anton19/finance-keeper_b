@@ -10,6 +10,9 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
 
 @Entity
@@ -23,6 +26,7 @@ data class UserEntity(
     var login: String = "baseLogin",
 
     @Column
+    @get:JvmName("getPasswordValue")
     var password: String = "basePassword",
 
     @CreationTimestamp
@@ -35,4 +39,16 @@ data class UserEntity(
 
     @OneToMany(mappedBy = "user")
     var transactions: List<TransactionEntity> = emptyList()
-)
+) : UserDetails {
+    override fun getUsername(): String = login
+
+    override fun getPassword(): String = password
+    override fun getAuthorities(): Collection<GrantedAuthority> =
+        listOf(SimpleGrantedAuthority("ROLE_USER"))
+
+
+    override fun isAccountNonExpired(): Boolean = true
+    override fun isAccountNonLocked(): Boolean = true
+    override fun isCredentialsNonExpired(): Boolean = true
+    override fun isEnabled(): Boolean = true
+}
