@@ -28,6 +28,6 @@ data class TransactionEntity(
     var user: UserEntity,
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     var category: CategoryEntity,
 )

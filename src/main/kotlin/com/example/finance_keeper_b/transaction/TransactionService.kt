@@ -3,7 +3,11 @@ package com.example.finance_keeper_b.transaction
 import com.example.finance_keeper_b.category.CategoryRepo
 import com.example.finance_keeper_b.exception.NotFoundException
 import com.example.finance_keeper_b.user.UserRepo
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class TransactionService (
@@ -32,5 +36,28 @@ class TransactionService (
         }
         transactionRepo.deleteById(id)
         return transactionRepo.findAll().map { it.toDto() }
+    }
+
+
+
+    fun getFiltered(
+        userId: Long,
+        type: Boolean?,
+        categoryId: Long?,
+        dateFrom: LocalDate?,
+        dateTo: LocalDate?,
+        amountFrom: Double?,
+        amountTo: Double?,
+        pageable: Pageable
+    ): Page<TransactionDto> {
+        val spec = TransactionSpec.forUser(userId)
+            .and(TransactionSpec.byType(type))
+            .and(TransactionSpec.byCategory(categoryId))
+            .and(TransactionSpec.byDateFrom(dateFrom))
+            .and(TransactionSpec.byDateTo(dateTo))
+            .and(TransactionSpec.byAmountFrom(amountFrom))
+            .and(TransactionSpec.byAmountTo(amountTo))
+
+        return transactionRepo.findAll(spec, pageable).map { it.toDto() }
     }
 }

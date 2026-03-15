@@ -20,13 +20,15 @@ class JwtAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        println(">>> filter: I'm in")
         val authHeader = request.getHeader("Authorization")
 
         if  (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            println(">>> filter: token is null")
             filterChain.doFilter(request, response)
             return
         }
-
+        println(">>> filter: token is not null $authHeader")
         val token = authHeader.substring(7)
 
         val username = jwtService.extractUsername(token)

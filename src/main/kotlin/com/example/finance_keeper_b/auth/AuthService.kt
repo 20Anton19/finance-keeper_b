@@ -21,6 +21,7 @@ class AuthService(
     private val authenticationManager: AuthenticationManager
 ) {
     fun register(request: AuthRequestDto): AuthResponseDto {
+        println(">>> AuthService: I'm in register method")
         if (userRepo.findByLogin(request.login) != null) {
             throw BadRequestException("Логин уже занят")
         }
@@ -32,9 +33,9 @@ class AuthService(
             categories = emptyList(),
             transactions = emptyList()
         )
-
+        println(">>> AuthService: I will save user")
         val savedUser = userRepo.save(user)
-
+        println(">>> AuthService: I saved user")
         return buildAuthResponse(savedUser)
 
     }
